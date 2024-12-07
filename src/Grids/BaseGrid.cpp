@@ -1,19 +1,19 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include "../inc/Grid.h"
-#include "../inc/Particle.h"
+#include "../../inc/Grids/BaseGrid.h"
+#include "../../inc/Particle.h"
 
 using namespace std;
 
-Grid::Grid(int width, int height) : width(width), height(height)
+BaseGrid::BaseGrid(int width, int height) : width(width), height(height)
 {
 
     cout << "Grid initialized with width " << width << " and height " << height << endl;
     grid_len = width * height;
 }
 
-bool Grid::checkIfDuplicatePosition(int position)
+bool BaseGrid::checkIfDuplicatePosition(int position)
 {
     size_t index = 0;
     while (particles[index] != nullptr)
@@ -28,7 +28,7 @@ bool Grid::checkIfDuplicatePosition(int position)
     return false;
 }
 
-int Grid::generateRandomPosOnEdge(size_t case_id)
+int BaseGrid::generateRandomPositions(size_t case_id)
 {
     int pos;
     int random_number = (rand() + 1); // +1 to not give more chance for 0
@@ -47,12 +47,13 @@ int Grid::generateRandomPosOnEdge(size_t case_id)
         pos = (random_number % height) * (width);
         break;
     default:
+        pos = random_number % grid_len;
         break;
     }
     return pos;
 }
 
-void Grid::initParticles(int &num_of_initial_particles)
+void BaseGrid::initParticles(int &num_of_initial_particles)
 {
     this->particles = (Particle **)malloc(sizeof(Particle *) * (num_of_initial_particles + 1));
     if (particles == nullptr)
@@ -66,7 +67,7 @@ void Grid::initParticles(int &num_of_initial_particles)
     }
 }
 
-void Grid::initialize(float density)
+void BaseGrid::initialize(float density)
 {
     if (density <= 0 || density > 1)
     {
@@ -88,30 +89,10 @@ void Grid::initialize(float density)
     }
     initParticles(num_of_initial_particles);
 
-    size_t direction_id = 0;
-    for (size_t i = 0; i < num_of_initial_particles; i++)
-    {
-        int particle_pos = generateRandomPosOnEdge(direction_id % 4);
-        int num_call_in_edge = 1;
-        while (checkIfDuplicatePosition(particle_pos))
-        {
-            if (num_call_in_edge > max(height, width))
-            {
-                num_call_in_edge = 1;
-                direction_id += 1;
-                cout << "direction id changed" << "on index" << i << endl;
-                break;
-            }
-            particle_pos = generateRandomPosOnEdge(direction_id % 4);
-            cout << "duplicate " << particle_pos << " !!!" << endl;
-            num_call_in_edge++;
-        }
-        particles[i] = new Particle(particle_pos);
-        direction_id++;
-    }
+    generateParticles(num_of_initial_particles);
 }
 
-Particle *Grid::getParticleByPosition(int &position)
+Particle *BaseGrid::getParticleByPosition(int &position)
 {
     size_t index = 0;
     while (particles[index] != nullptr)
@@ -125,7 +106,7 @@ Particle *Grid::getParticleByPosition(int &position)
     return NULL;
 }
 
-void Grid::print()
+void BaseGrid::print()
 {
     size_t index = 0;
     while (particles[index] != nullptr)
@@ -135,7 +116,7 @@ void Grid::print()
     }
 }
 
-void Grid::display()
+void BaseGrid::display()
 {
     vector<vector<int>> grid(height, vector<int>(width, 0));
     size_t index = 0;
@@ -157,21 +138,21 @@ void Grid::display()
     }
 }
 
-Particle **Grid::getParticles()
+Particle **BaseGrid::getParticles()
 {
     return particles;
 }
-int Grid::getWidth()
+int BaseGrid::getWidth()
 {
     return width;
 }
 
-int Grid::getHeight()
+int BaseGrid::getHeight()
 {
     return height;
 }
 
-bool Grid::reachedTerminalState()
+bool BaseGrid::reachedTerminalState()
 {
     size_t index = 0;
     while (particles[index] != nullptr)
@@ -185,7 +166,7 @@ bool Grid::reachedTerminalState()
     return true;
 }
 
-Grid::~Grid()
+BaseGrid::~BaseGrid()
 {
     size_t index = 0;
     while (particles[index] != nullptr)

@@ -1,9 +1,9 @@
 #include "../inc/Engine.h"
-#include "../inc/Grid.h"
+#include "../inc/Grids/BaseGrid.h"
 #include <cstdlib>
 using namespace std;
 
-Engine::Engine(Grid *&grid) : grid{grid}
+Engine::Engine(BaseGrid *&grid) : grid{grid}
 {
     directions = 8;
     grid_width = grid->getWidth();

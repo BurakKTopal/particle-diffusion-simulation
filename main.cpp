@@ -1,12 +1,15 @@
 #include <iostream>
-#include "inc/Grid.h"
+#include "inc/Grids/EdgeGrid.h"
+#include "inc/Grids/BaseGrid.h"
+#include "inc/Grids/RandomGrid.h"
 #include "inc/Particle.h"
 #include "inc/Engine.h"
 
 int main()
 {
     srand(time(0)); // initializer for time
-    Grid *grid = new Grid(80, 40);
+    BaseGrid *grid = new RandomGrid(80, 40);
+
     grid->initialize(0.06);
     grid->display();
     cout << "Start engine..." << endl;

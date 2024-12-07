@@ -4,25 +4,31 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include "Particle.h"
+#include "../Particle.h"
 
 using namespace std;
 
-class Grid
+class BaseGrid
 {
 private:
+    int grid_len;
+
+protected:
     int width;
     int height;
-    int grid_len;
     Particle **particles;
 
 private:
-    int generateRandomPosOnEdge(size_t case_id);
     void initParticles(int &num_of_initial_particles);
+
+protected:
+    int generateRandomPositions(size_t case_id);
+
+    virtual void generateParticles(int &num_of_initial_particles) = 0;
 
 public:
     bool checkIfDuplicatePosition(int position);
-    Grid(int width, int height);
+    BaseGrid(int width, int height);
     void initialize(float density);
     void print();
     Particle **getParticles();
@@ -31,7 +37,7 @@ public:
     int getHeight();
     bool reachedTerminalState();
     Particle *getParticleByPosition(int &position);
-    ~Grid();
+    virtual ~BaseGrid();
 };
 
 #endif // GRID_H

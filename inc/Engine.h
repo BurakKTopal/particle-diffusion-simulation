@@ -1,8 +1,7 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "Grid.h"
-#include <unordered_map>
+#include "Grids/BaseGrid.h"
 using namespace std;
 
 class Engine
@@ -11,13 +10,13 @@ private:
     int grid_width;
     int grid_height;
     int directions;
-    Grid *grid;
+    BaseGrid *grid;
     int generateRelativeMovement(int direction_id);
     bool isValidMove(int &old_pos, int &new_pos);
     void handleMovement(int &new_pos, Particle *&particle);
 
 public:
-    Engine(Grid *&grid);
+    Engine(BaseGrid *&grid);
     void updateGrid();
 };
 
