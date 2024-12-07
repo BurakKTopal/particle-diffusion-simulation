@@ -1,0 +1,1 @@
+g++ Grid.cpp -o build/grid
