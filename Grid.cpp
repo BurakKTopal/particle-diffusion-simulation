@@ -1,4 +1,4 @@
-#include <iostream> // Necessary for input/output operations
+#include <iostream>
 #include <map>
 #include <vector>
 #include "inc/Grid.h"
@@ -13,7 +13,7 @@ Grid::Grid(int width, int height) : width(width), height(height)
     grid_len = width * height;
 }
 
-bool Grid::checkIfDuplicatePosition(int &position)
+bool Grid::checkIfDuplicatePosition(int position)
 {
     size_t index = 0;
     while (particles[index] != nullptr)
@@ -38,7 +38,7 @@ int Grid::generateRandomPosOnEdge(size_t case_id)
         pos = random_number % width;
         break;
     case 1:
-        pos = (width - 1) + (rand() % height) * width;
+        pos = (width - 1) + (random_number % height) * width;
         break;
     case 2:
         pos = (random_number % width) + (height - 1) * (width);
@@ -55,6 +55,11 @@ int Grid::generateRandomPosOnEdge(size_t case_id)
 void Grid::initParticles(int &num_of_initial_particles)
 {
     this->particles = (Particle **)malloc(sizeof(Particle *) * (num_of_initial_particles + 1));
+    if (particles == nullptr)
+    {
+        cout << "malloc failed!" << endl;
+        exit(1);
+    }
     for (size_t i = 0; i < num_of_initial_particles + 1; i++)
     {
         particles[i] = nullptr;
@@ -75,6 +80,12 @@ void Grid::initialize(float density)
         cout << "too small density, please choose at least " << (1 / (float)grid_len) << endl;
         exit(1);
     }
+
+    if (num_of_initial_particles > 2 * (width + height) - 4)
+    {
+        cout << "Too much boundary particles. Maximally " << ((float)(2 * (width + height) - 4) / (height * width)) << endl;
+        exit(1);
+    }
     initParticles(num_of_initial_particles);
 
     size_t direction_id = 0;
@@ -88,6 +99,8 @@ void Grid::initialize(float density)
             {
                 num_call_in_edge = 1;
                 direction_id += 1;
+                cout << "direction id changed" << "on index" << i << endl;
+                break;
             }
             particle_pos = generateRandomPosOnEdge(direction_id % 4);
             cout << "duplicate " << particle_pos << " !!!" << endl;
@@ -108,6 +121,33 @@ void Grid::print()
     }
 }
 
+void Grid::display()
+{
+    vector<vector<int>> grid(height, vector<int>(width, 0));
+    size_t index = 0;
+    while (particles[index] != nullptr)
+    {
+        Particle *particle = particles[index];
+        int row = particle->getPosition() / width;
+        int col = particle->getPosition() % width;
+        (particle->getState() == MOVING) ? grid[row][col] = 1 : grid[row][col] = 2;
+        index++;
+    }
+    for (const auto &row : grid)
+    {
+        for (const auto &cell : row)
+        {
+            cout << cell << " ";
+        }
+        cout << endl;
+    }
+}
+
+Particle *Grid::getParticleByIndex(int &index)
+{
+    return particles[index];
+}
+
 Particle **Grid::getParticles()
 {
     return particles;
@@ -120,6 +160,20 @@ int Grid::getWidth()
 int Grid::getHeight()
 {
     return height;
+}
+
+bool Grid::reachedTerminalState()
+{
+    size_t index = 0;
+    while (particles[index] != nullptr)
+    {
+        if (particles[index]->getState() == MOVING)
+        {
+            return false;
+        }
+        index++;
+    }
+    return true;
 }
 
 Grid::~Grid()

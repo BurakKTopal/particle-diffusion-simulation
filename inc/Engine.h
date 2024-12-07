@@ -10,15 +10,17 @@ class Engine
 private:
     int grid_width;
     int grid_height;
-    size_t directions;
-    unordered_map<int, Particle *> seen_particles;
+    int directions;
     Grid *grid;
-
-    int generateRelativeMovement(size_t direction_id);
-    bool moveStaysWithinGrid(int new_pos);
+    bool particleCanMove(Particle *particle);
+    int generateRelativeMovement(int direction_id);
+    bool isValidMove(int &old_pos, int &new_pos);
     void handleMovement(int &new_pos, Particle *&particle);
+    void initSeenMap();
 
 public:
+    unordered_map<int, Particle *> seen_particles;
+
     Engine(Grid *&grid);
     void updateGrid();
 };

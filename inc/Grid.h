@@ -17,17 +17,20 @@ private:
     Particle **particles;
 
 private:
-    bool checkIfDuplicatePosition(int &position);
     int generateRandomPosOnEdge(size_t case_id);
     void initParticles(int &num_of_initial_particles);
 
 public:
+    bool checkIfDuplicatePosition(int position);
     Grid(int width, int height);
     void initialize(float density);
     void print();
     Particle **getParticles();
+    void display();
     int getWidth();
     int getHeight();
+    bool reachedTerminalState();
+    Particle *getParticleByIndex(int &index);
     ~Grid();
 };
 

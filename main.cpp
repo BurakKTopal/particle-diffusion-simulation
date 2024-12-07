@@ -6,16 +6,22 @@
 int main()
 {
     srand(time(0)); // initializer for time
-    Grid *grid = new Grid(3, 3);
-    grid->initialize(0.8);
-    grid->print();
-
-
-    
-    cout << "Start engine" << endl;
+    Grid *grid = new Grid(45, 45);
+    grid->initialize(0.07);
+    grid->display();
+    cout << "Start engine..." << endl;
     Engine *engine = new Engine(grid);
-    engine->updateGrid();
-    grid->print();
+
+    int iteration = 1;
+    while (!grid->reachedTerminalState())
+    {
+        cout << "ITERATION " << iteration << endl;
+        engine->updateGrid();
+        grid->display();
+        iteration++;
+    }
+    cout << "FINAL GRID" << endl;
+    grid->display();
 
     delete grid;
 }
