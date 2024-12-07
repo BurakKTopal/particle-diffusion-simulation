@@ -1,2 +1,7 @@
 # Vs code
 .vscode/
+
+# build and debug files
+build/
+debug/
+

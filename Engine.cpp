@@ -10,15 +10,15 @@ Engine::Engine(Grid *&grid) : grid{grid}
     grid_height = grid->getHeight();
 }
 
-int Engine::generateRelativeMovement(int direction_id)
+int Engine::generateRelativeMovement()
 {
-    // cout << "direction id is " << direction_id << endl;
-    if (direction_id < 0)
+    int direction_id;
+    do
     {
-        cout << "invalid direction id" << endl;
-        exit(1);
-    }
-    return ((int)(direction_id / 3) - 1) * grid_width + (-1 + (direction_id % 3)); // maps 0->-w-1, 1->-w, 2->-w+1, 3->-1, 4->0, 5->1, 6->w-1, 7-> w, 8-> w + 1
+        direction_id = rand() % directions; // Generates a random number between 0 and 7
+    } while (direction_id == 4); // Ensure it is not 4
+
+    return ((direction_id / 3) - 1) * grid_width + (direction_id % 3 - 1);
 }
 
 bool Engine::isValidMove(int &old_pos, int &new_pos)
@@ -35,12 +35,8 @@ bool Engine::particleCanMove(Particle *particle)
 {
     for (int id = 0; id < directions; id++)
     {
-        if (id == 4) // Movement on itself, not considered as valid move
-        {
-            continue;
-        }
         int particle_old_pos = particle->getPosition();
-        int particle_new_pos = particle_old_pos + generateRelativeMovement(rand() % directions);
+        int particle_new_pos = particle_old_pos + generateRelativeMovement();
         if (!grid->checkIfDuplicatePosition(particle_new_pos) && isValidMove(particle_old_pos, particle_new_pos) && particle->getState() == MOVING)
         {
             return true;
@@ -51,7 +47,6 @@ bool Engine::particleCanMove(Particle *particle)
 void Engine::initSeenMap()
 {
     this->seen_particles.clear();
-    this->seen_particles = unordered_map<int, Particle *>();
 }
 
 void Engine::updateGrid()
@@ -66,13 +61,10 @@ void Engine::updateGrid()
         if (particleCanMove(particles[index]))
         {
             int particle_old_pos = particles[index]->getPosition();
-
-            cout << "particle is going to move" << endl;
-
             do
             {
-                particle_new_pos = particles[index]->getPosition() + generateRelativeMovement(rand() % directions);
-            } while (!isValidMove(particle_old_pos, particle_new_pos) || particle_new_pos - particle_old_pos == 0);
+                particle_new_pos = particles[index]->getPosition() + generateRelativeMovement();
+            } while (!isValidMove(particle_old_pos, particle_new_pos));
         }
 
         handleMovement(particle_new_pos, particles[index]);

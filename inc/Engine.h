@@ -13,7 +13,7 @@ private:
     int directions;
     Grid *grid;
     bool particleCanMove(Particle *particle);
-    int generateRelativeMovement(int direction_id);
+    int generateRelativeMovement();
     bool isValidMove(int &old_pos, int &new_pos);
     void handleMovement(int &new_pos, Particle *&particle);
     void initSeenMap();
