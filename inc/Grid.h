@@ -30,7 +30,7 @@ public:
     int getWidth();
     int getHeight();
     bool reachedTerminalState();
-    Particle *getParticleByIndex(int &index);
+    Particle *getParticleByPosition(int &position);
     ~Grid();
 };
 

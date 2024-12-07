@@ -1,8 +1,8 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include "inc/Grid.h"
-#include "inc/Particle.h"
+#include "../inc/Grid.h"
+#include "../inc/Particle.h"
 
 using namespace std;
 
@@ -111,6 +111,20 @@ void Grid::initialize(float density)
     }
 }
 
+Particle *Grid::getParticleByPosition(int &position)
+{
+    size_t index = 0;
+    while (particles[index] != nullptr)
+    {
+        if (particles[index]->getPosition() == position)
+        {
+            return particles[index];
+        }
+        index++;
+    }
+    return NULL;
+}
+
 void Grid::print()
 {
     size_t index = 0;
@@ -141,11 +155,6 @@ void Grid::display()
         }
         cout << endl;
     }
-}
-
-Particle *Grid::getParticleByIndex(int &index)
-{
-    return particles[index];
 }
 
 Particle **Grid::getParticles()

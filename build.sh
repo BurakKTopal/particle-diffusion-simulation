@@ -1,2 +1,2 @@
-g++ Particle.cpp Grid.cpp Engine.cpp main.cpp -o build/main
-g++ -g Particle.cpp Grid.cpp Engine.cpp main.cpp -o debug/main
+g++ src/Particle.cpp src/Grid.cpp src/Engine.cpp main.cpp -o build/main
+g++ -g src/Particle.cpp src/Grid.cpp src/Engine.cpp main.cpp -o debug/main

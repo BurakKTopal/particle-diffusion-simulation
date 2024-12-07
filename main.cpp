@@ -6,8 +6,8 @@
 int main()
 {
     srand(time(0)); // initializer for time
-    Grid *grid = new Grid(45, 45);
-    grid->initialize(0.07);
+    Grid *grid = new Grid(80, 40);
+    grid->initialize(0.06);
     grid->display();
     cout << "Start engine..." << endl;
     Engine *engine = new Engine(grid);
