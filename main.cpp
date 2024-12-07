@@ -8,9 +8,9 @@
 int main()
 {
     srand(time(0)); // initializer for time
-    BaseGrid *grid = new RandomGrid(80, 40);
+    BaseGrid *grid = new EdgeGrid(400, 400);
 
-    grid->initialize(0.06);
+    grid->initialize(0.005);
     grid->display();
     cout << "Start engine..." << endl;
     Engine *engine = new Engine(grid);
@@ -18,13 +18,14 @@ int main()
     int iteration = 1;
     while (!grid->reachedTerminalState())
     {
-        cout << "ITERATION " << iteration << endl;
+        // cout << "ITERATION " << iteration << endl;
         engine->updateGrid();
-        grid->display();
+        // grid->display();
         iteration++;
     }
     cout << "FINAL GRID" << endl;
     grid->display();
 
     delete grid;
+    delete engine;
 }

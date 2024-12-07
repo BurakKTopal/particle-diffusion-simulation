@@ -1,6 +1,4 @@
 #include <iostream>
-#include <map>
-#include <vector>
 #include "../../inc/Grids/BaseGrid.h"
 #include "../../inc/Particle.h"
 
