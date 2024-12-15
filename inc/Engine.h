@@ -18,7 +18,7 @@ private:
 
 public:
     Engine(BaseParticleStore *&particle_store, SpaceMetadata *space_data);
-    void updateGrid();
+    void update();
 };
 
 #endif // ENGINE_H

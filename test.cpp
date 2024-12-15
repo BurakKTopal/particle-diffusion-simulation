@@ -8,82 +8,50 @@
 #include "inc/Engine.h"
 #include <thread>
 #include <chrono>
-#include "inc/RenderMachines/TwoDimensionalRenderMachine.h"
 
 // Grid size
-int n = 100;
-float gridSpacing = 1.0f;
+int width = 25;
+int height = 25;
+float grid_spacing = 1.0f;
 float cameraX = 0.0f, cameraY = 0.0f;
 float zoom = 1.0f;
 
-namespace TwoDimensionalRenderMachine
+void fillGridBox(int row, int col, float r, float g, float b)
 {
-    void fillGridBox(int row, int col, float r, float g, float b)
-    {
-        float xStart = -n / 2.0f * gridSpacing + col * gridSpacing + 0.1f;
-        float yStart = -n / 2.0f * gridSpacing + row * gridSpacing + 0.1f;
-        glColor3f(r, g, b);
-        glBegin(GL_QUADS);
-        glVertex2f(xStart, yStart);
-        glVertex2f(xStart + gridSpacing - 0.2f, yStart);
-        glVertex2f(xStart + gridSpacing - 0.2f, yStart + gridSpacing - 0.2f);
-        glVertex2f(xStart, yStart + gridSpacing - 0.2f);
-        glEnd();
-    }
-
-    void drawGrid()
-    {
-        glLineWidth(2.0f);
-        glColor3f(1.0f, 1.0f, 1.0f);
-        glBegin(GL_LINES);
-        for (int i = 0; i <= n; ++i)
-        {
-            float y = -n / 2.0f * gridSpacing + i * gridSpacing;
-            glVertex2f(-n / 2.0f * gridSpacing, y);
-            glVertex2f(n / 2.0f * gridSpacing, y);
-        }
-        for (int i = 0; i <= n; ++i)
-        {
-            float x = -n / 2.0f * gridSpacing + i * gridSpacing;
-            glVertex2f(x, -n / 2.0f * gridSpacing);
-            glVertex2f(x, n / 2.0f * gridSpacing);
-        }
-        glEnd();
-    }
-
-    void drawBoxes(Particle **&particles)
-    {
-        // Particle **particles = particle_store->getParticles();
-        size_t index = 0;
-        while (particles[index] != NULL)
-        {
-            int pos = particles[index]->getPosition();
-            int row = particles[index]->getPosition() / n;
-            int col = particles[index]->getPosition() % n;
-            if (particles[index]->getState() == MOVING)
-            {
-                fillGridBox((n - 1) - row, (n - 1) - col, 0.0f, 1.0f, 0.0f);
-            }
-            else
-            {
-                fillGridBox((n - 1) - row, (n - 1) - col, 1.0f, 0.0f, 0.0f);
-            }
-            index++;
-        }
-    }
+    float xStart = -width / 2.0f * grid_spacing + col * grid_spacing + 0.1f;
+    float yStart = -height / 2.0f * grid_spacing + row * grid_spacing + 0.1f;
+    glColor3f(r, g, b);
+    glBegin(GL_QUADS);
+    glVertex2f(xStart, yStart);
+    glVertex2f(xStart + grid_spacing - 0.2f, yStart);
+    glVertex2f(xStart + grid_spacing - 0.2f, yStart + grid_spacing - 0.2f);
+    glVertex2f(xStart, yStart + grid_spacing - 0.2f);
+    glEnd();
 }
 
-void render(GLFWwindow *window, BaseRenderMachine *render_machine, Particle **&particles)
+void drawGrid()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glScalef(zoom, zoom, 1.0f);
-    glTranslatef(cameraX, cameraY, 0.0f);
-    render_machine->drawSpace();
-    // Drawing the boxes
-    render_machine->drawBoxes(particles);
-    glfwSwapBuffers(window);
+    glLineWidth(2.0f);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glBegin(GL_LINES);
+
+    // Draw horizontal lines
+    for (int i = 0; i <= height; ++i)
+    {
+        float y = -height / 2.0f * grid_spacing + i * grid_spacing;
+        glVertex2f(-width / 2.0f * grid_spacing, y);
+        glVertex2f(width / 2.0f * grid_spacing, y);
+    }
+
+    // Draw vertical lines
+    for (int i = 0; i <= width; ++i)
+    {
+        float x = -height / 2.0f * grid_spacing + i * grid_spacing;
+        glVertex2f(x, -width / 2.0f * grid_spacing);
+        glVertex2f(x, height / 2.0f * grid_spacing);
+    }
+
+    glEnd();
 }
 
 void processInput(GLFWwindow *window)
@@ -101,6 +69,39 @@ void processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);
 }
 
+void drawBoxes(Particle **particles)
+{
+    size_t index = 0;
+    while (particles[index] != NULL)
+    {
+        int pos = particles[index]->getPosition();
+        int row = particles[index]->getPosition() / width;
+        int col = particles[index]->getPosition() % width;
+        if (particles[index]->getState() == MOVING)
+        {
+            fillGridBox((height - 1) - row, (width - 1) - col, 0.0f, 1.0f, 0.0f);
+        }
+        else
+        {
+            fillGridBox((height - 1) - row, (width - 1) - col, 1.0f, 0.0f, 0.0f);
+        }
+        index++;
+    }
+}
+
+void render(GLFWwindow *window, Particle **particles)
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glScalef(zoom, zoom, 1.0f);
+    glTranslatef(cameraX, cameraY, 0.0f);
+    drawGrid();
+    // Drawing the boxes
+    // drawBoxes(particles);
+    glfwSwapBuffers(window);
+}
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
     glViewport(0, 0, width, height);
@@ -109,14 +110,14 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
     float aspect = (float)width / height;
     if (aspect >= 1.0f)
     {
-        glOrtho(-n / 2.0f * gridSpacing * aspect, n / 2.0f * gridSpacing * aspect,
-                -n / 2.0f * gridSpacing, n / 2.0f * gridSpacing,
+        glOrtho(-width / 2.0f * grid_spacing * aspect, width / 2.0f * grid_spacing * aspect,
+                -height / 2.0f * grid_spacing, height / 2.0f * grid_spacing,
                 -1.0f, 1.0f);
     }
     else
     {
-        glOrtho(-n / 2.0f * gridSpacing, n / 2.0f * gridSpacing,
-                -n / 2.0f * gridSpacing / aspect, n / 2.0f * gridSpacing / aspect,
+        glOrtho(-width / 2.0f * grid_spacing, width / 2.0f * grid_spacing,
+                -height / 2.0f * grid_spacing / aspect, height / 2.0f * grid_spacing / aspect,
                 -1.0f, 1.0f);
     }
 }
@@ -127,7 +128,7 @@ GLFWwindow *initializeWindow()
     if (!glfwInit())
     {
         std::cerr << "Failed to initialize GLFW" << std::endl;
-        exit(-1);
+        // exit(-1);
     }
 
     GLFWwindow *window = glfwCreateWindow(800, 800, "GLFW Grid with Arrow Key Movement", NULL, NULL);
@@ -135,14 +136,14 @@ GLFWwindow *initializeWindow()
     if (!window)
     {
         glfwTerminate();
-        exit(-1);
+        // exit(-1);
     }
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cerr << "Failed to initialize GLAD" << std::endl;
-        exit(-1);
+        // exit(-1);
     }
 
     int width, height;
@@ -151,6 +152,8 @@ GLFWwindow *initializeWindow()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     return window;
+
+    cout << "EXITED initialize window" << endl;
 }
 
 void countDown(int time_before_start)
@@ -165,7 +168,7 @@ void countDown(int time_before_start)
 int main(int argc, char **argv)
 {
     SpaceMetadata *space_data = (SpaceMetadata *)malloc(sizeof(SpaceMetadata));
-    space_data->setMetaData(n, n, 2);
+    space_data->setMetaData(width, width, 2);
 
     // Initialization
     srand(time(0));
@@ -175,23 +178,20 @@ int main(int argc, char **argv)
 
     cout << "Start engine..." << endl;
     Engine *engine = new Engine(particle_store, space_data);
-    int milliseconds = 150;
 
     GLFWwindow *window = initializeWindow();
-    Particle **particles = particle_store->getParticles();
-    BaseRenderMachine *render_machine = new TwoDimensionalRenderMachine(space_data, gridSpacing);
-
-    render(window, render_machine, particles);
+    render(window, particle_store->getParticles());
 
     cout << "iteration will start in " << endl;
     countDown(5000);
 
+    int milliseconds = 150;
     while (!glfwWindowShouldClose(window) && !particle_store->reachedTerminalState())
     {
         engine->update();
         cout << "engine updated" << endl;
         processInput(window);
-        render(window, render_machine, particles);
+        render(window, particle_store->getParticles());
         glfwPollEvents();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
@@ -203,7 +203,6 @@ int main(int argc, char **argv)
     delete particle_store;
     delete engine;
     delete space_data;
-    delete render_machine;
     glfwTerminate();
     return 0;
 }

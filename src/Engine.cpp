@@ -27,7 +27,7 @@ bool Engine::isValidMove(int &old_pos, int &new_pos)
     return row_diff <= 1 && col_diff <= 1;
 }
 
-void Engine::updateGrid()
+void Engine::update()
 {
     size_t index = 0;
     Particle **particles = particle_store->getParticles();
