@@ -174,7 +174,7 @@ int main(int argc, char **argv)
     countDown(5000);
 
     // Main simulation loop
-    int milliseconds = 150;
+    int milliseconds = 5;
     while (!glfwWindowShouldClose(window) && !particle_store->reachedTerminalState())
     {
         engine->update();
