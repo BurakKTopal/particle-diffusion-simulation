@@ -2,13 +2,12 @@
 #define GRID_H
 
 #include <iostream>
-#include <map>
-#include <vector>
 #include "../Particle.h"
-
+#include <GLFW/glfw3.h>
+#include <vector>
 using namespace std;
 
-class BaseGrid
+class BaseParticleStore
 {
 protected:
     int grid_len;
@@ -27,17 +26,15 @@ protected:
 
 public:
     bool checkIfDuplicatePosition(int position);
-    BaseGrid(int width, int height);
+    BaseParticleStore(int width, int height);
     void initialize(float density);
-    void print();
     Particle **getParticles();
-    void display();
     int getWidth();
     int getHeight();
     bool reachedTerminalState();
     Particle *getParticleByPosition(int &position);
 
-    virtual ~BaseGrid();
+    virtual ~BaseParticleStore();
 };
 
 #endif // GRID_H

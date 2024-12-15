@@ -1,40 +1,9 @@
-// #include <iostream>
-// #include "inc/Grids/EdgeGrid.h"
-// #include "inc/Grids/BaseGrid.h"
-// #include "inc/Grids/RandomGrid.h"
-// #include "inc/Particle.h"
-// #include "inc/Engine.h"
-
-// int main()
-// {
-//     srand(time(0)); // initializer for time
-//     BaseGrid *grid = new EdgeGrid(400, 400);
-
-//     grid->initialize(0.005);
-//     grid->display();
-//     cout << "Start engine..." << endl;
-//     Engine *engine = new Engine(grid);
-
-//     int iteration = 1;
-//     while (!grid->reachedTerminalState())
-//     {
-//         // cout << "ITERATION " << iteration << endl;
-//         engine->updateGrid();
-//         // grid->display();
-//         iteration++;
-//     }
-//     cout << "FINAL GRID" << endl;
-//     grid->display();
-
-//     delete grid;
-//     delete engine;
-// }
 #include <GLFW/glfw3.h>
 #include <glad/glad.h> // Include glad for OpenGL function loading
 #include <iostream>
-#include "inc/Grids/EdgeGrid.h"
-#include "inc/Grids/BaseGrid.h"
-#include "inc/Grids/RandomGrid.h"
+#include "inc/ParticleStores/BaseParticleStore.h"
+#include "inc/ParticleStores/EdgePositionedParticleStore.h"
+#include "inc/ParticleStores/RandomPositionedParticleStore.h"
 #include "inc/Particle.h"
 #include "inc/Engine.h"
 #include <thread>
@@ -99,9 +68,9 @@ void processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);
 }
 
-void drawBoxes(BaseGrid *&grid)
+void drawBoxes(BaseParticleStore *&particle_store)
 {
-    Particle **particles = grid->getParticles();
+    Particle **particles = particle_store->getParticles();
     size_t index = 0;
     while (particles[index] != NULL)
     {
@@ -119,7 +88,7 @@ void drawBoxes(BaseGrid *&grid)
         index++;
     }
 }
-void render(GLFWwindow *window, BaseGrid *&grid)
+void render(GLFWwindow *window, BaseParticleStore *&particle_store)
 {
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -128,12 +97,7 @@ void render(GLFWwindow *window, BaseGrid *&grid)
     glTranslatef(cameraX, cameraY, 0.0f);
     drawGrid();
     // Drawing the boxes
-    drawBoxes(grid);
-
-    // fillGridBox(2, 3, 1.0f, 0.0f, 0.0f);
-    // fillGridBox(3, 3, 1.0f, 0.0f, 0.0f);
-    // fillGridBox(4, 3, 1.0f, 0.0f, 0.0f);
-    // fillGridBox(5, 3, 1.0f, 0.0f, 0.0f);
+    drawBoxes(particle_store);
     glfwSwapBuffers(window);
 }
 
@@ -157,10 +121,10 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
     }
 }
 
-void runIteration(GLFWwindow *window, BaseGrid *&grid, Engine *&engine)
+void runIteration(GLFWwindow *window, BaseParticleStore *&particle_store, Engine *&engine)
 {
     int iteration = 1;
-    while (!grid->reachedTerminalState())
+    while (!particle_store->reachedTerminalState())
     {
         cout << "ITERATION " << iteration << endl;
         engine->updateGrid();
@@ -177,11 +141,11 @@ int main(int argc, char **argv)
     // }
     // Initialization
     srand(time(0)); // initializer for time
-    BaseGrid *grid = new EdgeGrid(n, n);
-    grid->initialize(0.03);
+    BaseParticleStore *particle_store = new EdgePositionedParticleStore(n, n);
+    particle_store->initialize(0.03);
     // grid->display();
     cout << "Start engine..." << endl;
-    Engine *engine = new Engine(grid);
+    Engine *engine = new Engine(particle_store);
     int milliseconds = 150;
 
     if (!glfwInit())
@@ -210,7 +174,7 @@ int main(int argc, char **argv)
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-    render(window, grid);
+    render(window, particle_store);
     cout << "iteration will start in " << endl;
     int time_before_start = 20000;
     for (int i = 0; i < time_before_start / 1000; i++)
@@ -219,17 +183,12 @@ int main(int argc, char **argv)
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 
-    while (!glfwWindowShouldClose(window) && !grid->reachedTerminalState())
+    while (!glfwWindowShouldClose(window) && !particle_store->reachedTerminalState())
     {
         engine->updateGrid();
         cout << "engine updated" << endl;
         processInput(window);
-        // main loop to make the simulation.
-        // runSimulation(window);
-
-        render(window, grid);
-
-        // Get poll events
+        render(window, particle_store);
         glfwPollEvents();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
@@ -238,7 +197,8 @@ int main(int argc, char **argv)
     while (!glfwWindowShouldClose(window))
     {
     }
-
+    delete particle_store;
+    delete engine;
     glfwTerminate();
     return 0;
 }

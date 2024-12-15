@@ -1,9 +1,9 @@
-#include "../../inc/Grids/EdgeGrid.h"
+#include "../../inc/ParticleStores/EdgePositionedParticleStore.h"
 
-EdgeGrid::EdgeGrid(int width, int height) : BaseGrid(width, height)
+EdgePositionedParticleStore::EdgePositionedParticleStore(int width, int height) : BaseParticleStore(width, height)
 {
 }
-void EdgeGrid::generateParticles(int &num_of_initial_particles)
+void EdgePositionedParticleStore::generateParticles(int &num_of_initial_particles)
 {
     size_t direction_id = 0;
     for (size_t i = 0; i < num_of_initial_particles; i++)
@@ -28,7 +28,7 @@ void EdgeGrid::generateParticles(int &num_of_initial_particles)
     }
 }
 
-void EdgeGrid::additionalDensityCheck(float &density)
+void EdgePositionedParticleStore::additionalDensityCheck(float &density)
 {
     int num_of_initial_particles = int(density * grid_len);
 
@@ -38,6 +38,6 @@ void EdgeGrid::additionalDensityCheck(float &density)
         exit(1);
     }
 }
-EdgeGrid::~EdgeGrid()
+EdgePositionedParticleStore::~EdgePositionedParticleStore()
 {
 }

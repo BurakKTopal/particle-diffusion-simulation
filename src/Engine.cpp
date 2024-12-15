@@ -1,13 +1,13 @@
 #include "../inc/Engine.h"
-#include "../inc/Grids/BaseGrid.h"
+#include "../inc/ParticleStores/BaseParticleStore.h"
 #include <cstdlib>
 using namespace std;
 
-Engine::Engine(BaseGrid *&grid) : grid{grid}
+Engine::Engine(BaseParticleStore *&particle_store) : particle_store{particle_store}
 {
     directions = 8;
-    grid_width = grid->getWidth();
-    grid_height = grid->getHeight();
+    grid_width = particle_store->getWidth();
+    grid_height = particle_store->getHeight();
 }
 
 int Engine::generateRelativeMovement(int direction_id)
@@ -35,7 +35,7 @@ bool Engine::isValidMove(int &old_pos, int &new_pos)
 void Engine::updateGrid()
 {
     size_t index = 0;
-    Particle **particles = grid->getParticles();
+    Particle **particles = particle_store->getParticles();
 
     while (particles[index] != nullptr)
     {
@@ -56,7 +56,7 @@ void Engine::updateGrid()
 
 void Engine::handleMovement(int &new_pos, Particle *&particle)
 {
-    Particle *colliding_particle = grid->getParticleByPosition(new_pos);
+    Particle *colliding_particle = particle_store->getParticleByPosition(new_pos);
 
     if (colliding_particle != NULL)
     {

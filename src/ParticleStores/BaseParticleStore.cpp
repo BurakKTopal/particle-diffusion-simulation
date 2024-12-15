@@ -1,17 +1,17 @@
 #include <iostream>
-#include "../../inc/Grids/BaseGrid.h"
+#include "../../inc/ParticleStores/BaseParticleStore.h"
 #include "../../inc/Particle.h"
 
 using namespace std;
 
-BaseGrid::BaseGrid(int width, int height) : width(width), height(height)
+BaseParticleStore::BaseParticleStore(int width, int height) : width(width), height(height)
 {
 
     cout << "Grid initialized with width " << width << " and height " << height << endl;
     grid_len = width * height;
 }
 
-bool BaseGrid::checkIfDuplicatePosition(int position)
+bool BaseParticleStore::checkIfDuplicatePosition(int position)
 {
     size_t index = 0;
     while (particles[index] != nullptr)
@@ -26,7 +26,7 @@ bool BaseGrid::checkIfDuplicatePosition(int position)
     return false;
 }
 
-int BaseGrid::generateRandomPositions(size_t case_id)
+int BaseParticleStore::generateRandomPositions(size_t case_id)
 {
     int pos;
     int random_number = (rand() + 1); // +1 to not give more chance for 0
@@ -51,7 +51,7 @@ int BaseGrid::generateRandomPositions(size_t case_id)
     return pos;
 }
 
-void BaseGrid::initParticles(int &num_of_initial_particles)
+void BaseParticleStore::initParticles(int &num_of_initial_particles)
 {
     this->particles = (Particle **)malloc(sizeof(Particle *) * (num_of_initial_particles + 1));
     if (particles == nullptr)
@@ -65,7 +65,7 @@ void BaseGrid::initParticles(int &num_of_initial_particles)
     }
 }
 
-void BaseGrid::initialize(float density)
+void BaseParticleStore::initialize(float density)
 {
 
     if (density <= 0 || density > 1)
@@ -81,13 +81,12 @@ void BaseGrid::initialize(float density)
     }
     additionalDensityCheck(density);
 
-   
     initParticles(num_of_initial_particles);
 
     generateParticles(num_of_initial_particles);
 }
 
-Particle *BaseGrid::getParticleByPosition(int &position)
+Particle *BaseParticleStore::getParticleByPosition(int &position)
 {
     size_t index = 0;
     while (particles[index] != nullptr)
@@ -101,53 +100,21 @@ Particle *BaseGrid::getParticleByPosition(int &position)
     return NULL;
 }
 
-void BaseGrid::print()
-{
-    size_t index = 0;
-    while (particles[index] != nullptr)
-    {
-        cout << "there is a particle at " << particles[index]->getPosition() << endl;
-        index++;
-    }
-}
-
-void BaseGrid::display()
-{
-    vector<vector<int>> grid(height, vector<int>(width, 0));
-    size_t index = 0;
-    while (particles[index] != nullptr)
-    {
-        Particle *particle = particles[index];
-        int row = particle->getPosition() / width;
-        int col = particle->getPosition() % width;
-        (particle->getState() == MOVING) ? grid[row][col] = 1 : grid[row][col] = 2;
-        index++;
-    }
-    for (const auto &row : grid)
-    {
-        for (const auto &cell : row)
-        {
-            cout << cell << " ";
-        }
-        cout << endl;
-    }
-}
-
-Particle **BaseGrid::getParticles()
+Particle **BaseParticleStore::getParticles()
 {
     return particles;
 }
-int BaseGrid::getWidth()
+int BaseParticleStore::getWidth()
 {
     return width;
 }
 
-int BaseGrid::getHeight()
+int BaseParticleStore::getHeight()
 {
     return height;
 }
 
-bool BaseGrid::reachedTerminalState()
+bool BaseParticleStore::reachedTerminalState()
 {
     size_t index = 0;
     while (particles[index] != nullptr)
@@ -161,7 +128,7 @@ bool BaseGrid::reachedTerminalState()
     return true;
 }
 
-BaseGrid::~BaseGrid()
+BaseParticleStore::~BaseParticleStore()
 {
     size_t index = 0;
     while (particles[index] != nullptr)

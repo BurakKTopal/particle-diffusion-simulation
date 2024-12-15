@@ -1,10 +1,10 @@
-#include "../../inc/Grids/RandomGrid.h"
+#include "../../inc/ParticleStores/RandomPositionedParticleStore.h"
 
-RandomGrid::RandomGrid(int width, int height) : BaseGrid(width, height)
+RandomPositionedParticleStore::RandomPositionedParticleStore(int width, int height) : BaseParticleStore(width, height)
 {
 }
 
-void RandomGrid::generateParticles(int &num_of_initial_particles)
+void RandomPositionedParticleStore::generateParticles(int &num_of_initial_particles)
 {
     for (size_t i = 0; i < num_of_initial_particles; i++)
     {
@@ -18,6 +18,6 @@ void RandomGrid::generateParticles(int &num_of_initial_particles)
     }
 }
 
-RandomGrid::~RandomGrid()
+RandomPositionedParticleStore::~RandomPositionedParticleStore()
 {
 }
