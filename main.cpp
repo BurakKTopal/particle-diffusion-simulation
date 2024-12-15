@@ -1,5 +1,5 @@
 #include <GLFW/glfw3.h>
-#include <glad/glad.h> // Include glad for OpenGL function loading
+#include <glad/glad.h>
 #include <iostream>
 #include "inc/ParticleStores/BaseParticleStore.h"
 #include "inc/ParticleStores/EdgePositionedParticleStore.h"
@@ -9,25 +9,27 @@
 #include <thread>
 #include <chrono>
 
-// Grid size
-int grid_width = 40;
-int grid_height = 40;
-float gridSpacing = 1.0f;
-float cameraX = 0.0f, cameraY = 0.0f;
-float zoom = 1.0f;
+// Use standard library components globally
+using namespace std;
+
+const int GRID_WIDTH = 40;
+const int GRID_HEIGHT = 40;
+const float GRID_SPACING = 1.0f;
+float cameraX = 0.0f, cameraY = 0.0f, zoom = 1.0f;
 
 namespace TwoDimensionalRenderMachine
 {
     void fillGridBox(int row, int col, float r, float g, float b)
     {
-        float xStart = -grid_width / 2.0f * gridSpacing + col * gridSpacing + 0.1f;
-        float yStart = -grid_height / 2.0f * gridSpacing + row * gridSpacing + 0.1f;
+        // Fill a grid box with the specified color
+        float xStart = -GRID_WIDTH / 2.0f * GRID_SPACING + col * GRID_SPACING + 0.1f;
+        float yStart = -GRID_HEIGHT / 2.0f * GRID_SPACING + row * GRID_SPACING + 0.1f;
         glColor3f(r, g, b);
         glBegin(GL_QUADS);
         glVertex2f(xStart, yStart);
-        glVertex2f(xStart + gridSpacing - 0.2f, yStart);
-        glVertex2f(xStart + gridSpacing - 0.2f, yStart + gridSpacing - 0.2f);
-        glVertex2f(xStart, yStart + gridSpacing - 0.2f);
+        glVertex2f(xStart + GRID_SPACING - 0.2f, yStart);
+        glVertex2f(xStart + GRID_SPACING - 0.2f, yStart + GRID_SPACING - 0.2f);
+        glVertex2f(xStart, yStart + GRID_SPACING - 0.2f);
         glEnd();
     }
 
@@ -37,20 +39,20 @@ namespace TwoDimensionalRenderMachine
         glColor3f(1.0f, 1.0f, 1.0f);
         glBegin(GL_LINES);
 
-        // Draw horizontal lines based on grid height
-        for (int i = 0; i <= grid_height; ++i)
+        // Draw horizontal lines
+        for (int i = 0; i <= GRID_HEIGHT; ++i)
         {
-            float y = -grid_height / 2.0f * gridSpacing + i * gridSpacing;
-            glVertex2f(-grid_width / 2.0f * gridSpacing, y);
-            glVertex2f(grid_width / 2.0f * gridSpacing, y);
+            float y = -GRID_HEIGHT / 2.0f * GRID_SPACING + i * GRID_SPACING;
+            glVertex2f(-GRID_WIDTH / 2.0f * GRID_SPACING, y);
+            glVertex2f(GRID_WIDTH / 2.0f * GRID_SPACING, y);
         }
 
-        // Draw vertical lines based on grid width
-        for (int i = 0; i <= grid_width; ++i)
+        // Draw vertical lines
+        for (int i = 0; i <= GRID_WIDTH; ++i)
         {
-            float x = -grid_width / 2.0f * gridSpacing + i * gridSpacing;
-            glVertex2f(x, -grid_height / 2.0f * gridSpacing);
-            glVertex2f(x, grid_height / 2.0f * gridSpacing);
+            float x = -GRID_WIDTH / 2.0f * GRID_SPACING + i * GRID_SPACING;
+            glVertex2f(x, -GRID_HEIGHT / 2.0f * GRID_SPACING);
+            glVertex2f(x, GRID_HEIGHT / 2.0f * GRID_SPACING);
         }
 
         glEnd();
@@ -59,20 +61,16 @@ namespace TwoDimensionalRenderMachine
     void drawBoxes(Particle **&particles)
     {
         size_t index = 0;
-        while (particles[index] != NULL)
+        while (particles[index] != nullptr)
         {
             int pos = particles[index]->getPosition();
-            int row = pos / grid_width;
-            int col = pos % grid_width;
+            int row = pos / GRID_WIDTH;
+            int col = pos % GRID_WIDTH;
 
-            if (particles[index]->getState() == MOVING)
-            {
-                fillGridBox((grid_height - 1) - row, (grid_width - 1) - col, 0.0f, 1.0f, 0.0f);
-            }
-            else
-            {
-                fillGridBox((grid_height - 1) - row, (grid_width - 1) - col, 1.0f, 0.0f, 0.0f);
-            }
+            // Set box color based on particle state
+            float r = (particles[index]->getState() == MOVING) ? 0.0f : 1.0f;
+            float g = (particles[index]->getState() == MOVING) ? 1.0f : 0.0f;
+            fillGridBox((GRID_HEIGHT - 1) - row, (GRID_WIDTH - 1) - col, r, g, 0.0f);
             index++;
         }
     }
@@ -80,14 +78,18 @@ namespace TwoDimensionalRenderMachine
 
 void render(GLFWwindow *window, Particle **&particles)
 {
+    // Clear the screen and set up the camera
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glScalef(zoom, zoom, 1.0f);
     glTranslatef(cameraX, cameraY, 0.0f);
+
+    // Draw the grid and the boxes
     TwoDimensionalRenderMachine::drawGrid();
-    // Drawing the boxes
     TwoDimensionalRenderMachine::drawBoxes(particles);
+
+    // Swap buffers to render
     glfwSwapBuffers(window);
 }
 
@@ -96,23 +98,22 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    float grid_length = max(grid_height, grid_width);
-    glOrtho(-grid_length / 2.0f * gridSpacing, grid_length / 2.0f * gridSpacing,
-            -grid_length / 2.0f * gridSpacing, grid_length / 2.0f * gridSpacing,
+    float grid_length = max(GRID_HEIGHT, GRID_WIDTH);
+    glOrtho(-grid_length / 2.0f * GRID_SPACING, grid_length / 2.0f * GRID_SPACING,
+            -grid_length / 2.0f * GRID_SPACING, grid_length / 2.0f * GRID_SPACING,
             -1.0f, 1.0f);
 }
 
 GLFWwindow *initializeWindow()
 {
-    cout << "Entered initialize window" << endl;
+    // Initialize GLFW and create a window
     if (!glfwInit())
     {
         cerr << "Failed to initialize GLFW" << endl;
         exit(-1);
     }
 
-    GLFWwindow *window = glfwCreateWindow(800, 800, "GLFW Grid with Arrow Key Movement", NULL, NULL);
-
+    GLFWwindow *window = glfwCreateWindow(800, 800, "Diffusion-limited-aggregation-simulation", nullptr, nullptr);
     if (!window)
     {
         glfwTerminate();
@@ -120,22 +121,28 @@ GLFWwindow *initializeWindow()
     }
     glfwMakeContextCurrent(window);
 
+    // Initialize OpenGL loader (GLAD)
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         cerr << "Failed to initialize GLAD" << endl;
         exit(-1);
     }
 
+    // Set up the framebuffer size callback
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
     framebuffer_size_callback(window, width, height);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    // Set the background color
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
     return window;
 }
 
 void countDown(int time_before_start)
 {
+    // Simple countdown before simulation starts
     cout << "Iteration will start in " << endl;
     for (int i = 0; i < time_before_start / 1000; i++)
     {
@@ -149,20 +156,24 @@ int main(int argc, char **argv)
     // Initialization
     srand(time(0));
 
-    SpaceMetadata *space_data = (SpaceMetadata *)malloc(sizeof(SpaceMetadata));
-    space_data->setMetaData(grid_width, grid_height, 2);
+    // Set up the simulation space metadata
+    SpaceMetadata *space_data = new SpaceMetadata();
+    space_data->setMetaData(GRID_WIDTH, GRID_HEIGHT, 2);
 
+    // Initialize particle store and engine
     BaseParticleStore *particle_store = new RandomPositionedParticleStore(space_data);
     particle_store->initialize(0.1);
-
     Engine *engine = new Engine(particle_store, space_data);
 
+    // Set up the window and particles
     GLFWwindow *window = initializeWindow();
     Particle **particles = particle_store->getParticles();
     render(window, particles);
 
+    // Countdown before starting the simulation
     countDown(5000);
 
+    // Main simulation loop
     int milliseconds = 150;
     while (!glfwWindowShouldClose(window) && !particle_store->reachedTerminalState())
     {
@@ -170,15 +181,19 @@ int main(int argc, char **argv)
         cout << "Engine updated" << endl;
         render(window, particles);
         glfwPollEvents();
-
         this_thread::sleep_for(chrono::milliseconds(milliseconds));
     }
+
     cout << "Simulation ended" << endl;
+
+    // Cleanup and close the window
     while (!glfwWindowShouldClose(window))
     {
     }
+
     delete particle_store;
     delete engine;
     glfwTerminate();
+
     return 0;
 }
