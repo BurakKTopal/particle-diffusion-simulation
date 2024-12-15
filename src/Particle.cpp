@@ -1,4 +1,3 @@
-#include <iostream>
 #include "../inc/Particle.h"
 
 using namespace std;

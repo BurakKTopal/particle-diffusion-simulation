@@ -1,14 +1,9 @@
-#include <iostream>
 #include "../../inc/ParticleStores/BaseParticleStore.h"
-#include "../../inc/Particle.h"
 
-using namespace std;
-
-BaseParticleStore::BaseParticleStore(int width, int height) : width(width), height(height)
+BaseParticleStore::BaseParticleStore(SpaceMetadata *space_data) : space_data(space_data)
 {
-
-    cout << "Grid initialized with width " << width << " and height " << height << endl;
-    grid_len = width * height;
+    cout << "Particle store initialized with space having width " << space_data->getWidth() << " and height " << space_data->getHeight() << endl;
+    n_of_boxes = space_data->getNumberOfBoxes();
 }
 
 bool BaseParticleStore::checkIfDuplicatePosition(int position)
@@ -26,30 +21,30 @@ bool BaseParticleStore::checkIfDuplicatePosition(int position)
     return false;
 }
 
-int BaseParticleStore::generateRandomPositions(size_t case_id)
-{
-    int pos;
-    int random_number = (rand() + 1); // +1 to not give more chance for 0
-    switch (case_id)
-    {
-    case 0:
-        pos = random_number % width;
-        break;
-    case 1:
-        pos = (width - 1) + (random_number % height) * width;
-        break;
-    case 2:
-        pos = (random_number % width) + (height - 1) * (width);
-        break;
-    case 3:
-        pos = (random_number % height) * (width);
-        break;
-    default:
-        pos = random_number % grid_len;
-        break;
-    }
-    return pos;
-}
+// int BaseParticleStore::generateRandomPositions(size_t case_id)
+// {
+//     int pos;
+//     int random_number = (rand() + 1); // +1 to not give more chance for 0
+//     switch (case_id)
+//     {
+//     case 0:
+//         pos = random_number % width;
+//         break;
+//     case 1:
+//         pos = (width - 1) + (random_number % height) * width;
+//         break;
+//     case 2:
+//         pos = (random_number % width) + (height - 1) * (width);
+//         break;
+//     case 3:
+//         pos = (random_number % height) * (width);
+//         break;
+//     default:
+//         pos = random_number % grid_len;
+//         break;
+//     }
+//     return pos;
+// }
 
 void BaseParticleStore::initParticles(int &num_of_initial_particles)
 {
@@ -73,10 +68,10 @@ void BaseParticleStore::initialize(float density)
         cout << "invalid density range (0, 1]" << endl;
         exit(1);
     }
-    int num_of_initial_particles = int(density * grid_len);
+    int num_of_initial_particles = int(density * n_of_boxes);
     if (num_of_initial_particles == 0)
     {
-        cout << "too small density, please choose at least " << (1 / (float)grid_len) << endl;
+        cout << "too small density, please choose at least " << (1 / (float)n_of_boxes) << endl;
         exit(1);
     }
     additionalDensityCheck(density);
@@ -104,15 +99,15 @@ Particle **BaseParticleStore::getParticles()
 {
     return particles;
 }
-int BaseParticleStore::getWidth()
-{
-    return width;
-}
+// int BaseParticleStore::getWidth()
+// {
+//     return width;
+// }
 
-int BaseParticleStore::getHeight()
-{
-    return height;
-}
+// int BaseParticleStore::getHeight()
+// {
+//     return height;
+// }
 
 bool BaseParticleStore::reachedTerminalState()
 {

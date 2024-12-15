@@ -2,13 +2,14 @@
 #define ENGINE_H
 
 #include "ParticleStores/BaseParticleStore.h"
+#include <cstdlib>
+#include <cmath>
 using namespace std;
 
 class Engine
 {
 private:
-    int grid_width;
-    int grid_height;
+    SpaceMetadata *space_data;
     int directions;
     BaseParticleStore *particle_store;
     int generateRelativeMovement(int direction_id);
@@ -16,7 +17,7 @@ private:
     void handleMovement(int &new_pos, Particle *&particle);
 
 public:
-    Engine(BaseParticleStore *&particle_store);
+    Engine(BaseParticleStore *&particle_store, SpaceMetadata *space_data);
     void updateGrid();
 };
 

@@ -135,17 +135,17 @@ void runIteration(GLFWwindow *window, BaseParticleStore *&particle_store, Engine
 
 int main(int argc, char **argv)
 {
-    // if (argc > 1)
-    // {
-    //     n = std::stoi(argv[1]);
-    // }
+    SpaceMetadata *space_data = (SpaceMetadata *)malloc(sizeof(SpaceMetadata));
+    space_data->setMetaData(n, n, 20);
+
     // Initialization
-    srand(time(0)); // initializer for time
-    BaseParticleStore *particle_store = new EdgePositionedParticleStore(n, n);
+    srand(time(0));
+
+    BaseParticleStore *particle_store = new RandomPositionedParticleStore(space_data);
     particle_store->initialize(0.03);
-    // grid->display();
+
     cout << "Start engine..." << endl;
-    Engine *engine = new Engine(particle_store);
+    Engine *engine = new Engine(particle_store, space_data);
     int milliseconds = 150;
 
     if (!glfwInit())
