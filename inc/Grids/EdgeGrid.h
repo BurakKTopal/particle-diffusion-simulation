@@ -7,6 +7,7 @@ class EdgeGrid : public BaseGrid
 {
 public:
     EdgeGrid(int width, int height);
+    void additionalDensityCheck(float &density) override;
     ~EdgeGrid();
 
 private:

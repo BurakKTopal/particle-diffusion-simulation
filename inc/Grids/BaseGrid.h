@@ -10,10 +10,8 @@ using namespace std;
 
 class BaseGrid
 {
-private:
-    int grid_len;
-
 protected:
+    int grid_len;
     int width;
     int height;
     Particle **particles;
@@ -25,6 +23,7 @@ protected:
     int generateRandomPositions(size_t case_id);
 
     virtual void generateParticles(int &num_of_initial_particles) = 0;
+    virtual void additionalDensityCheck(float &density) {};
 
 public:
     bool checkIfDuplicatePosition(int position);
@@ -37,6 +36,7 @@ public:
     int getHeight();
     bool reachedTerminalState();
     Particle *getParticleByPosition(int &position);
+
     virtual ~BaseGrid();
 };
 

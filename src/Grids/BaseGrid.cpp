@@ -67,24 +67,21 @@ void BaseGrid::initParticles(int &num_of_initial_particles)
 
 void BaseGrid::initialize(float density)
 {
+
     if (density <= 0 || density > 1)
     {
         cout << "invalid density range (0, 1]" << endl;
         exit(1);
     }
-
     int num_of_initial_particles = int(density * grid_len);
     if (num_of_initial_particles == 0)
     {
         cout << "too small density, please choose at least " << (1 / (float)grid_len) << endl;
         exit(1);
     }
+    additionalDensityCheck(density);
 
-    if (num_of_initial_particles > 2 * (width + height) - 4)
-    {
-        cout << "Too much boundary particles. Maximally " << ((float)(2 * (width + height) - 4) / (height * width)) << endl;
-        exit(1);
-    }
+   
     initParticles(num_of_initial_particles);
 
     generateParticles(num_of_initial_particles);

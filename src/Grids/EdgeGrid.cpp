@@ -27,6 +27,17 @@ void EdgeGrid::generateParticles(int &num_of_initial_particles)
         direction_id++;
     }
 }
+
+void EdgeGrid::additionalDensityCheck(float &density)
+{
+    int num_of_initial_particles = int(density * grid_len);
+
+    if (num_of_initial_particles > 2 * (width + height) - 4)
+    {
+        cout << "Too much boundary particles. Maximally " << ((float)(2 * (width + height) - 4) / (height * width)) << endl;
+        exit(1);
+    }
+}
 EdgeGrid::~EdgeGrid()
 {
 }
