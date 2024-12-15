@@ -73,7 +73,6 @@ namespace TwoDimensionalRenderMachine
             {
                 fillGridBox((grid_height - 1) - row, (grid_width - 1) - col, 1.0f, 0.0f, 0.0f);
             }
-
             index++;
         }
     }
@@ -97,7 +96,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    float grid_length = std::max(grid_height, grid_width);
+    float grid_length = max(grid_height, grid_width);
     glOrtho(-grid_length / 2.0f * gridSpacing, grid_length / 2.0f * gridSpacing,
             -grid_length / 2.0f * gridSpacing, grid_length / 2.0f * gridSpacing,
             -1.0f, 1.0f);
@@ -105,10 +104,10 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 
 GLFWwindow *initializeWindow()
 {
-    std::cout << "Entered initialize window" << std::endl;
+    cout << "Entered initialize window" << endl;
     if (!glfwInit())
     {
-        std::cerr << "Failed to initialize GLFW" << std::endl;
+        cerr << "Failed to initialize GLFW" << endl;
         exit(-1);
     }
 
@@ -123,7 +122,7 @@ GLFWwindow *initializeWindow()
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        std::cerr << "Failed to initialize GLAD" << std::endl;
+        cerr << "Failed to initialize GLAD" << endl;
         exit(-1);
     }
 
@@ -137,45 +136,44 @@ GLFWwindow *initializeWindow()
 
 void countDown(int time_before_start)
 {
+    cout << "Iteration will start in " << endl;
     for (int i = 0; i < time_before_start / 1000; i++)
     {
-        std::cout << time_before_start / 1000 - i << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        cout << time_before_start / 1000 - i << endl;
+        this_thread::sleep_for(chrono::milliseconds(1000));
     }
 }
 
 int main(int argc, char **argv)
 {
-    SpaceMetadata *space_data = (SpaceMetadata *)malloc(sizeof(SpaceMetadata));
-    space_data->setMetaData(grid_width, grid_height, 2);
-
     // Initialization
     srand(time(0));
+
+    SpaceMetadata *space_data = (SpaceMetadata *)malloc(sizeof(SpaceMetadata));
+    space_data->setMetaData(grid_width, grid_height, 2);
 
     BaseParticleStore *particle_store = new RandomPositionedParticleStore(space_data);
     particle_store->initialize(0.1);
 
-    std::cout << "Start engine..." << std::endl;
     Engine *engine = new Engine(particle_store, space_data);
-    int milliseconds = 150;
 
     GLFWwindow *window = initializeWindow();
     Particle **particles = particle_store->getParticles();
     render(window, particles);
 
-    std::cout << "Iteration will start in " << std::endl;
     countDown(5000);
 
+    int milliseconds = 150;
     while (!glfwWindowShouldClose(window) && !particle_store->reachedTerminalState())
     {
         engine->update();
-        std::cout << "Engine updated" << std::endl;
+        cout << "Engine updated" << endl;
         render(window, particles);
         glfwPollEvents();
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
+        this_thread::sleep_for(chrono::milliseconds(milliseconds));
     }
-    std::cout << "Simulation ended" << std::endl;
+    cout << "Simulation ended" << endl;
     while (!glfwWindowShouldClose(window))
     {
     }
