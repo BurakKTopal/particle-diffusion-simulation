@@ -10,7 +10,9 @@
 #include <chrono>
 #include "inc/config.h"
 #include "src/WindowInit.cpp"
-#include "src/TwoDimensionalRenderMachine.cpp"
+#include "inc/RenderMachines/BaseRenderMachine.h"
+#include "inc/RenderMachines/TwoDimensionalRenderMachine.h"
+
 // Use standard library components globally
 using namespace std;
 
@@ -42,7 +44,10 @@ int main(int argc, char **argv)
     // Set up the window and particles
     GLFWwindow *window = initializeWindow();
     Particle **particles = particle_store->getParticles();
-    TwoDimensionalRenderMachine::render(window, particles);
+
+    BaseRenderMachine *render_machine = new TwoDimensionalRenderMachine();
+
+    render_machine->render(window, particles);
 
     // Countdown before starting the simulation
     countDown(5000);
@@ -53,7 +58,7 @@ int main(int argc, char **argv)
     {
         engine->update();
         cout << "Engine updated" << endl;
-        TwoDimensionalRenderMachine::render(window, particles);
+        render_machine->render(window, particles);
         glfwPollEvents();
         this_thread::sleep_for(chrono::milliseconds(milliseconds));
     }
