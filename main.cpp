@@ -30,7 +30,7 @@ void countDown(int time_before_start)
 
 int main(int argc, char **argv)
 {
-    // Initialization
+    // Initialization of randomness for particle positions
     srand(time(0));
 
     // Set up the simulation space metadata
@@ -40,12 +40,15 @@ int main(int argc, char **argv)
     // Initialize particle store and engine
     BaseParticleStore *particle_store = new RandomPositionedParticleStore(space_data);
     particle_store->initialize(0.1);
+
+    // Setup engine
     Engine *engine = new Engine(particle_store, space_data);
 
     // Set up the window and particles
     GLFWwindow *window = initializeWindow();
     Particle **particles = particle_store->getParticles();
 
+    // Setup rendermachine and visualization
     BaseRenderMachine *render_machine = new TwoDimensionalRenderMachine();
 
     render_machine->render(window, particles);
@@ -54,14 +57,15 @@ int main(int argc, char **argv)
     countDown(5000);
 
     // Main simulation loop
-    int milliseconds = 5;
+    size_t n_iteration = 1;
     while (!glfwWindowShouldClose(window) && !particle_store->reachedTerminalState())
     {
         engine->update();
-        cout << "Engine updated" << endl;
+        cout << "Engine updated at iteration " << n_iteration << endl;
         render_machine->render(window, particles);
         glfwPollEvents();
-        this_thread::sleep_for(chrono::milliseconds(milliseconds));
+        this_thread::sleep_for(chrono::milliseconds(SIMULATION_TIME_MS));
+        n_iteration++;
     }
 
     cout << "Simulation ended" << endl;
@@ -73,6 +77,8 @@ int main(int argc, char **argv)
 
     delete particle_store;
     delete engine;
+    delete render_machine;
+    delete space_data;
     glfwTerminate();
 
     return 0;
