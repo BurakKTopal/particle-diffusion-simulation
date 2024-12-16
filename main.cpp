@@ -9,9 +9,10 @@
 #include <thread>
 #include <chrono>
 #include "inc/config.h"
+
 #include "src/WindowInit.cpp"
-#include "inc/RenderMachines/BaseRenderMachine.h"
-#include "inc/RenderMachines/TwoDimensionalRenderMachine.h"
+#include "src/RenderMachines/BaseRenderMachine.cpp"
+#include "src/RenderMachines/TwoDimensionalRenderMachine.cpp"
 
 // Use standard library components globally
 using namespace std;
