@@ -10,5 +10,5 @@ To setup up your own simulation, with the unique params go to `inc/config.h`. Ch
 # Animation
 
 <p>
-  <img src="https://github.com/BurakKTopal/diffusion-limited-aggregation/blob/main/_media/particleSimulationNoGrid_150ms.gif" width="50%" />
+  <img src="https://github.com/BurakKTopal/diffusion-limited-aggregation/blob/main/media/particleSimulationNoGrid_150ms.gif" width="50%" />
 </p>
