@@ -20,7 +20,6 @@ private:
     void initParticles(int &num_of_initial_particles);
 
 protected:
-
     virtual void generateParticles(int &num_of_initial_particles) = 0;
     virtual void additionalDensityCheck(float &density) {};
 
@@ -29,8 +28,6 @@ public:
     BaseParticleStore(SpaceMetadata *space_data);
     void initialize(float density);
     Particle **getParticles();
-    // int getWidth();
-    // int getHeight();
     bool reachedTerminalState();
     Particle *getParticleByPosition(int &position);
 

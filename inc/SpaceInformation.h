@@ -34,4 +34,4 @@ public:
     }
 } SpaceMetadata;
 
-#endif // RANDOM_POSITIONED_PARTICLE_STORE
+#endif

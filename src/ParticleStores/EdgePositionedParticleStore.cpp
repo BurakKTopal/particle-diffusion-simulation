@@ -16,11 +16,9 @@ void EdgePositionedParticleStore::generateParticles(int &num_of_initial_particle
             {
                 num_call_in_edge = 1;
                 direction_id += 1;
-                std::cout << "direction id changed" << " on index " << i << std::endl;
                 break;
             }
             particle_pos = generateRandomEdgePosition(direction_id % 4);
-            std::cout << "duplicate " << particle_pos << " !!!" << std::endl;
             num_call_in_edge++;
         }
         particles[i] = new Particle(particle_pos);

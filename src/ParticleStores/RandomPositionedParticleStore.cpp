@@ -14,7 +14,6 @@ void RandomPositionedParticleStore::generateParticles(int &num_of_initial_partic
         {
             random_number = (rand() + 1); // +1 to not give more chance for 0
             particle_pos = random_number % n_of_boxes;
-            cout << "duplicate " << particle_pos << " !!!" << endl;
         } while (checkIfDuplicatePosition(particle_pos));
         particles[i] = new Particle(particle_pos);
     }

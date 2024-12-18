@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     render_machine->render(window, particles);
 
     // Countdown before starting the simulation
-    countDown(COUNTDOWN_FOR_SIMULATION);
+    countDown(COUNTDOWN_FOR_SIMULATION_MS);
 
     // Main simulation loop
     size_t n_iteration = 1;
