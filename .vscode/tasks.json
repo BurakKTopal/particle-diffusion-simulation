@@ -1,0 +1,42 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe build active file",
+            "command": "C:\\msys64\\mingw64\\bin\\g++.exe",
+            "args": [
+                "-g",
+                "-std=c++17",
+                "-I${workspaceFolder}/inc", // Include path for headers
+                "-L${workspaceFolder}/lib", // Library path
+                "${workspaceFolder}/main.cpp", // Source file
+                "${workspaceFolder}/src/ExternalUtils/glad.c", // GLAD implementation
+                "-lglfw3", // Link against GLFW
+                "-lopengl32", // Link against OpenGL library
+                "-o",
+                "${workspaceFolder}/build/main.exe", // Output file
+                "${workspaceFolder}/src/Particle.cpp",
+                "${workspaceFolder}/src/Engine.cpp",
+                "${workspaceFolder}/src/ParticleStores/BaseParticleStore.cpp",
+                "${workspaceFolder}/src/ParticleStores/EdgePositionedParticleStore.cpp",
+                "${workspaceFolder}/src/ParticleStores/RandomPositionedParticleStore.cpp",
+                "${workspaceFolder}/src/ParticleStores/ParticleStoreFactory.cpp",
+                // "${workspaceFolder}/src/WindowInit.cpp",
+                // "${workspaceFolder}/src/RenderMachines/BaseRenderMachine.cpp",
+                // "${workspaceFolder}/src/RenderMachines/TwoDimensionalRenderMachine.cpp",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}" // Set the current working directory
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "compiler: C:\\msys64\\mingw64\\bin\\g++.exe"
+        }
+    ]
+}

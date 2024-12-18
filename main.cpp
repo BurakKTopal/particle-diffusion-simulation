@@ -9,6 +9,7 @@
 #include <thread>
 #include <chrono>
 #include "inc/config.h"
+#include "inc/ParticleStores/ParticleStoreFactory.h"
 
 #include "src/WindowInit.cpp"
 #include "src/RenderMachines/BaseRenderMachine.cpp"
@@ -38,8 +39,8 @@ int main(int argc, char **argv)
     space_data->setMetaData(GRID_WIDTH, GRID_HEIGHT, 2);
 
     // Initialize particle store and engine
-    BaseParticleStore *particle_store = new RandomPositionedParticleStore(space_data);
-    particle_store->initialize(0.1);
+    BaseParticleStore *particle_store = ParticleStoreFactory::initialize(PARTICLE_STORE_TYPE, space_data);
+    particle_store->initialize(DENSITY);
 
     // Setup engine
     Engine *engine = new Engine(particle_store, space_data);
@@ -54,7 +55,7 @@ int main(int argc, char **argv)
     render_machine->render(window, particles);
 
     // Countdown before starting the simulation
-    countDown(5000);
+    countDown(COUNTDOWN_FOR_SIMULATION);
 
     // Main simulation loop
     size_t n_iteration = 1;

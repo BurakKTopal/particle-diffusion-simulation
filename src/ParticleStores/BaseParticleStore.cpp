@@ -21,31 +21,6 @@ bool BaseParticleStore::checkIfDuplicatePosition(int position)
     return false;
 }
 
-// int BaseParticleStore::generateRandomPositions(size_t case_id)
-// {
-//     int pos;
-//     int random_number = (rand() + 1); // +1 to not give more chance for 0
-//     switch (case_id)
-//     {
-//     case 0:
-//         pos = random_number % width;
-//         break;
-//     case 1:
-//         pos = (width - 1) + (random_number % height) * width;
-//         break;
-//     case 2:
-//         pos = (random_number % width) + (height - 1) * (width);
-//         break;
-//     case 3:
-//         pos = (random_number % height) * (width);
-//         break;
-//     default:
-//         pos = random_number % grid_len;
-//         break;
-//     }
-//     return pos;
-// }
-
 void BaseParticleStore::initParticles(int &num_of_initial_particles)
 {
     this->particles = (Particle **)malloc(sizeof(Particle *) * (num_of_initial_particles + 1));
@@ -99,15 +74,6 @@ Particle **BaseParticleStore::getParticles()
 {
     return particles;
 }
-// int BaseParticleStore::getWidth()
-// {
-//     return width;
-// }
-
-// int BaseParticleStore::getHeight()
-// {
-//     return height;
-// }
 
 bool BaseParticleStore::reachedTerminalState()
 {

@@ -12,7 +12,7 @@ void BaseRenderMachine::render(GLFWwindow *window, Particle **&particles)
     glTranslatef(cameraX, cameraY, 0.0f);
 
     // Draw the grid and the boxes
-    drawSpace();
+    // drawSpace();
     drawBoxes(particles);
 
     // Swap buffers to render
