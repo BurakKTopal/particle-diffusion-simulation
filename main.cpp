@@ -11,7 +11,7 @@
 #include "inc/config.h"
 #include "inc/ParticleStores/ParticleStoreFactory.h"
 
-#include "src/WindowInit.cpp"
+#include "src/Windows/GridWindow.cpp"
 #include "src/RenderMachines/BaseRenderMachine.cpp"
 #include "src/RenderMachines/TwoDimensionalRenderMachine.cpp"
 
@@ -45,8 +45,10 @@ int main(int argc, char **argv)
     // Setup engine
     Engine *engine = new Engine(particle_store, space_data);
 
+    BaseWindow *window_instance = new GridWindow();
+
     // Set up the window and particles
-    GLFWwindow *window = initializeWindow();
+    GLFWwindow *window = window_instance->initialize(800, 800, "2D Particle aggregation Simulation");
     Particle **particles = particle_store->getParticles();
 
     // Setup rendermachine and visualization
@@ -80,6 +82,7 @@ int main(int argc, char **argv)
     delete engine;
     delete render_machine;
     delete space_data;
+    delete window_instance;
     glfwTerminate();
 
     return 0;
