@@ -35,21 +35,30 @@ void BaseParticleStore::initParticles(int &num_of_initial_particles)
     }
 }
 
-void BaseParticleStore::initialize(float density)
+void BaseParticleStore::displayErrorAndExit(string error_message)
 {
+    cout << error_message << endl;
+    cin.get();
+    exit(1);
+}
 
+void BaseParticleStore::checkDensity(float &density)
+{
     if (density <= 0 || density > 1)
     {
-        cout << "invalid density range (0, 1]" << endl;
-        exit(1);
+        displayErrorAndExit("invalid density range (0, 1]");
     }
-    int num_of_initial_particles = int(density * n_of_boxes);
-    if (num_of_initial_particles == 0)
+    if (int(density * n_of_boxes) == 0)
     {
-        cout << "too small density, please choose at least " << (1 / (float)n_of_boxes) << endl;
-        exit(1);
+        displayErrorAndExit("too small density, please choose at least " + to_string(1 / (float)n_of_boxes));
     }
-    additionalDensityCheck(density);
+}
+
+void BaseParticleStore::initialize(float density)
+{
+    checkDensity(density);
+
+    int num_of_initial_particles = int(density * n_of_boxes);
 
     initParticles(num_of_initial_particles);
 

@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include "../SpaceInformation.h"
+#include <string>
 
 using namespace std;
 
@@ -21,9 +22,10 @@ private:
 
 protected:
     virtual void generateParticles(int &num_of_initial_particles) = 0;
-    virtual void additionalDensityCheck(float &density) {};
+    void displayErrorAndExit(string error_message);
 
 public:
+    virtual void checkDensity(float &density);
     bool checkIfDuplicatePosition(int position);
     BaseParticleStore(SpaceMetadata *space_data);
     void initialize(float density);

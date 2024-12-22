@@ -7,11 +7,13 @@ class EdgePositionedParticleStore : public BaseParticleStore
 {
 public:
     EdgePositionedParticleStore(SpaceMetadata *space_data);
-    void additionalDensityCheck(float &density) override;
+    void checkDensity(float &density) override;
     ~EdgePositionedParticleStore();
 
-private:
+protected:
     void generateParticles(int &num_of_initial_particles);
+
+private:
     int generateRandomEdgePosition(size_t case_id);
 };
 

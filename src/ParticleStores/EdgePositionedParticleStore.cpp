@@ -26,15 +26,15 @@ void EdgePositionedParticleStore::generateParticles(int &num_of_initial_particle
     }
 }
 
-void EdgePositionedParticleStore::additionalDensityCheck(float &density)
+void EdgePositionedParticleStore::checkDensity(float &density)
 {
+    BaseParticleStore::checkDensity(density); // Base class check
     int num_of_initial_particles = int(density * n_of_boxes);
     int width = space_data->getWidth();
     int height = space_data->getHeight();
     if (num_of_initial_particles > 2 * (width + height) - 4)
     {
-        cout << "Too much boundary particles. Maximally " << ((float)(2 * (width + height) - 4) / (height * width)) << endl;
-        exit(1);
+        displayErrorAndExit("Too much boundary particles. Maximally " + to_string((float)(2 * (width + height) - 4) / (height * width)));
     }
 }
 int EdgePositionedParticleStore::generateRandomEdgePosition(size_t case_id)
