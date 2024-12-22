@@ -18,7 +18,7 @@ private:
     State state;
 
 public:
-    Particle(int position);
+    Particle(int position, State state = MOVING);
     void setPosition(int position);
     int getPosition();
     State getState();

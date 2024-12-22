@@ -22,6 +22,7 @@
                 "${workspaceFolder}/src/ParticleStores/EdgePositionedParticleStore.cpp",
                 "${workspaceFolder}/src/ParticleStores/RandomPositionedParticleStore.cpp",
                 "${workspaceFolder}/src/ParticleStores/ParticleStoreFactory.cpp",
+                "${workspaceFolder}/src/ParticleStores/CenterEdgePositionedParticleStore.cpp",
                 // "${workspaceFolder}/src/WindowInit.cpp",
                 // "${workspaceFolder}/src/RenderMachines/BaseRenderMachine.cpp",
                 // "${workspaceFolder}/src/RenderMachines/TwoDimensionalRenderMachine.cpp",

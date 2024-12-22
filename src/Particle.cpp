@@ -1,12 +1,9 @@
 #include "../inc/Particle.h"
 
-using namespace std;
-
-Particle::Particle(int position) : position(position)
+Particle::Particle(int position, State state) : position(position), state(state)
 {
-    cout << "Initialized particle at position " << position << endl;
-    this->state = MOVING;
-};
+    std::cout << "Initialized particle at position " << position << std::endl;
+}
 
 void Particle::setPosition(int position)
 {

@@ -11,7 +11,7 @@ public:
     ~EdgePositionedParticleStore();
 
 protected:
-    void generateParticles(int &num_of_initial_particles);
+    void generateParticles(int &num_of_initial_particles) override;
 
 private:
     int generateRandomEdgePosition(size_t case_id);

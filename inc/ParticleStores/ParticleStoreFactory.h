@@ -7,6 +7,7 @@ enum ParticleStoreType
 {
     RANDOM,
     EDGE,
+    CENTER_EDGE, // Also corresponds to DLA
     DEFAULT
 };
 

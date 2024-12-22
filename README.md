@@ -7,8 +7,20 @@ In case you would like to run the executable yourself, go to the `/build` and ru
 # Setting up own simulation
 To setup up your own simulation, with the unique params go to `inc/config.h`. Change the values here, and build (Shortcut: ctrl + shift + B for vscode). For the VSCoders, I have left the .vscode folder in there so that you can look at the build params. This should make it a lot easier.
 
+# Type of simulations
+
+We support the following types of particle stores:
+
+1. **Random Positioned Particle Store (`RANDOM`)**: Initializes particles at random positions within the simulation space.
+
+2. **Edge Positioned Particle Store (`EDGE`)**: Initializes particles along the edges of the simulation space.
+
+3. **Center Edge Positioned Particle Store (`CENTER_EDGE`)**: Initializes particles starting from the center and edges in a clockwise, snake-like pattern, systematically constructing the formation from the center outward. To make it more interesting, only the actual center particle is initially stationary while the surrounding particles can move. This approach ensures an orderly yet dynamic placement of particles suitable for diffusion-limited aggregation (DLA) simulations. This store utilizes an additional parameter `DENSITY_CENTER` to control the density of particles at the center.
+
 # Animation
 
 <p>
   <img src="https://github.com/BurakKTopal/diffusion-limited-aggregation/blob/main/media/particleSimulationNoGrid_150ms.gif" width="50%" />
+  <br />
+  <em>Simulation for random positioned particles</em>
 </p>

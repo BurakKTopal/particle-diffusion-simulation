@@ -17,10 +17,8 @@ protected:
     SpaceMetadata *space_data;
     Particle **particles;
 
-private:
-    void initParticles(int &num_of_initial_particles);
-
 protected:
+    void initParticles(int &num_of_initial_particles);
     virtual void generateParticles(int &num_of_initial_particles) = 0;
     void displayErrorAndExit(string error_message);
 
@@ -28,7 +26,12 @@ public:
     virtual void checkDensity(float &density);
     bool checkIfDuplicatePosition(int position);
     BaseParticleStore(SpaceMetadata *space_data);
-    void initialize(float density);
+    virtual void initialize(float density);
+    virtual void initialize(float edge_density, float center_density)
+    {
+        displayErrorAndExit("The initialize method with center density is only supported for CenterEdgePositionedParticleStore (aka DLA) \n"
+                            "Consider using the initialize method with density only.");
+    }; // DLA
     Particle **getParticles();
     bool reachedTerminalState();
     Particle *getParticleByPosition(int &position);
