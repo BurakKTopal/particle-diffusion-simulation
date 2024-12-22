@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 
     // Initialize particle store and engine
     BaseParticleStore *particle_store = ParticleStoreFactory::initialize(PARTICLE_STORE_TYPE, space_data);
-    particle_store->initialize(DENSITY);
+    particle_store->initialize(DENSITY, CENTER_DENSITY);
 
     // Setup engine
     Engine *engine = new Engine(particle_store, space_data);

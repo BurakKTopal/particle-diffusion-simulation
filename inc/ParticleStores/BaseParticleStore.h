@@ -27,10 +27,10 @@ public:
     bool checkIfDuplicatePosition(int position);
     BaseParticleStore(SpaceMetadata *space_data);
     virtual void initialize(float density);
-    virtual void initialize(float edge_density, float center_density)
+    virtual void initialize(float density, float center_density)
     {
-        displayErrorAndExit("The initialize method with center density is only supported for CenterEdgePositionedParticleStore (aka DLA) \n"
-                            "Consider using the initialize method with density only.");
+        cout << "The initialize method with center density is only supported for CenterEdgePositionedParticleStore (aka DLA) \n Switched to default initialize method with density only." << endl;
+        initialize(density);
     }; // DLA
     Particle **getParticles();
     bool reachedTerminalState();

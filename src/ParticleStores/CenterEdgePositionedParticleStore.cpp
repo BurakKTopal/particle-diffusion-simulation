@@ -36,7 +36,7 @@ void CenterEdgePositionedParticleStore::generateCenterParticles(int num_edge_par
         for (int i = 0; i < steps && index < num_center_particles; i++)
         {
             curr_pos += displacement[direction_id % 4];
-            particles[num_edge_particles + index] = new Particle(curr_pos);
+            particles[num_edge_particles + index] = new Particle(curr_pos, STATIONARY);
             index++;
         }
 

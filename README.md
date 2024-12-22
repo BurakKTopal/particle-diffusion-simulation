@@ -1,5 +1,5 @@
-# diffusion-limited-aggregation
-C++ simulation of diffusion limited aggregation in OpenGL.
+# Particle Diffusion Simulation
+C++ simulation of particle diffusion in OpenGL, with different initialization strategies (center-edge (->Diffusion Limited Aggregation), random, edge).
 
 # Run it yourself!
 In case you would like to run the executable yourself, go to the `/build` and run the executable. Be sure that the dll file is in the same folder as where you run it!
@@ -15,7 +15,7 @@ We support the following types of particle stores:
 
 2. **Edge Positioned Particle Store (`EDGE`)**: Initializes particles along the edges of the simulation space.
 
-3. **Center Edge Positioned Particle Store (`CENTER_EDGE`)**: Initializes particles starting from the center and edges in a clockwise, snake-like pattern, systematically constructing the formation from the center outward. To make it more interesting, only the actual center particle is initially stationary while the surrounding particles can move. This approach ensures an orderly yet dynamic placement of particles suitable for diffusion-limited aggregation (DLA) simulations. This store utilizes an additional parameter `DENSITY_CENTER` to control the density of particles at the center.
+3. **Center Edge Positioned Particle Store (`CENTER_EDGE`)**: Initializes particles starting from the center and edges in a clockwise, snake-like pattern, systematically constructing the formation from the center outward. This approach ensures an orderly yet dynamic placement of particles suitable for diffusion-limited aggregation (DLA) simulations. This store utilizes an additional parameter `DENSITY_CENTER` to control the density of particles at the center.
 
 # Animation
 
