@@ -8,14 +8,14 @@
             "args": [
                 "-g",
                 "-std=c++17",
-                "-I${workspaceFolder}/inc", // Include path for headers
-                "-L${workspaceFolder}/lib", // Library path
-                "${workspaceFolder}/main.cpp", // Source file
-                "${workspaceFolder}/src/ExternalUtils/glad.c", // GLAD implementation
-                "-lglfw3", // Link against GLFW
-                "-lopengl32", // Link against OpenGL library
+                "-I${workspaceFolder}/inc",
+                "-L${workspaceFolder}/lib",
+                "${workspaceFolder}/main.cpp",
+                "${workspaceFolder}/src/ExternalUtils/glad.c",
+                "-lglfw3",
+                "-lopengl32",
                 "-o",
-                "${workspaceFolder}/build/main.exe", // Output file
+                "${workspaceFolder}/build/main.exe",
                 "${workspaceFolder}/src/Particle.cpp",
                 "${workspaceFolder}/src/Engine.cpp",
                 "${workspaceFolder}/src/ParticleStores/BaseParticleStore.cpp",
@@ -28,7 +28,7 @@
                 // "${workspaceFolder}/src/RenderMachines/TwoDimensionalRenderMachine.cpp",
             ],
             "options": {
-                "cwd": "${workspaceFolder}" // Set the current working directory
+                "cwd": "${workspaceFolder}"
             },
             "problemMatcher": [
                 "$gcc"

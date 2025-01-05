@@ -2,10 +2,33 @@
 C++ simulation of particle diffusion in OpenGL, with different initialization strategies (center-edge (->Diffusion Limited Aggregation), random, edge).
 
 # Run it yourself!
-In case you would like to run the executable yourself, go to the `/build` and run the executable. Be sure that the dll file is in the same folder as where you run it!
+In case you would like to run the executable yourself, go to the `/build` and run the executable. Be sure that the dll file is in the same folder to ensure the dynamic library linking.
 
 # Setting up own simulation
 To setup up your own simulation, with the unique params go to `inc/config.h`. Change the values here, and build (Shortcut: ctrl + shift + B for vscode). For the VSCoders, I have left the .vscode folder in there so that you can look at the build params. This should make it a lot easier.
+
+For the project structure to get a successful build is neatly shown in 2 minutes at https://www.youtube.com/watch?v=Y4F0tI7WlDs
+
+The project structure with these library files would look similar to:
+```
+diffusion-limited-aggregation/
+├── debug/                   
+├── lib/                     
+├── inc/                     
+│   ├── glad/                
+│   ├── GLFW/                
+│   ├── KHR/                 
+│   ├── ...                  
+├── src/                     
+│   ├── ExternalUtils/       
+│   ├── ...                  
+├── .vscode/                 
+│   ├── tasks.json           
+│   ├── ...                 
+├── ...                      
+```
+
+I've left my own tasks.json in there as this is specific to this project.
 
 # Type of simulations
 

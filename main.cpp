@@ -78,6 +78,7 @@ int main(int argc, char **argv)
     {
     }
 
+    // Cleanup
     delete particle_store;
     delete engine;
     delete render_machine;

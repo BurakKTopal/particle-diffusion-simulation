@@ -11,7 +11,6 @@ struct BaseWindow
 
     virtual GLFWwindow *createWindow(int width = 800, int height = 800, const char *title = "Base Window")
     {
-        // Initialize GLFW and create a window
         if (!glfwInit())
         {
             cerr << "Failed to initialize GLFW" << endl;
@@ -26,7 +25,6 @@ struct BaseWindow
         }
         glfwMakeContextCurrent(window);
 
-        // Initialize OpenGL loader (GLAD)
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {
             cerr << "Failed to initialize GLAD" << endl;
@@ -34,7 +32,6 @@ struct BaseWindow
             exit(-1);
         }
 
-        // Set the background color
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         return window;

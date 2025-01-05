@@ -1,2 +1,17 @@
 # build and debug files
 debug/
+
+# libraries
+lib/
+
+# external includes
+inc/glad/
+inc/GLFW/
+inc/KHR/
+
+# External utils
+src/ExternalUtils/
+
+# .vscode
+.vscode/*
+!.vscode/tasks.json

@@ -7,10 +7,8 @@ struct GridWindow : public BaseWindow
     {
         GLFWwindow *window = BaseWindow::createWindow(width, height, title);
 
-        // Store this instance in the window's user pointer
         glfwSetWindowUserPointer(window, this);
 
-        // Set up grid-specific framebuffer callback
         glfwGetFramebufferSize(window, &width, &height);
         framebuffer_size_callback(window, width, height);
         glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
